@@ -1,6 +1,6 @@
 # Spice Label Generator
 
-A modern Python tool to automatically generate stylish labels for your spice jars.  
+A Python tool to automatically generate stylish labels for your spice jars.  
 Given a CSV input with Spanish and English names for each spice, this tool produces a beautifully rendered SVG label and a corresponding PNG image.
 
 **Key Features**:
