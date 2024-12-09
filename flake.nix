@@ -16,7 +16,11 @@
     in {
       # A development shell with Python and dependencies
       devShells.${system}.default = pkgs.mkShell {
-        buildInputs = [ pythonDeps pkgs.inkscape ];
+        buildInputs = [
+          pythonDeps
+          pkgs.inkscape
+          pkgs.imagemagick
+        ];
       };
 
       # Define an app that runs the script directly
