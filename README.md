@@ -14,6 +14,8 @@ Given a CSV input with Spanish and English names for each spice, this tool produ
 
 ### Prerequisites
 
+#### Software
+
 - Nix with flakes. 
 
 OR
@@ -22,14 +24,31 @@ OR
 - Imagemagick
 - Inkscape
 
+#### Hardware
+
+- [Spice rack](https://www.amazon.es/Relaxdays-Especiero-Giratorio-especias-herm%C3%A9tico/dp/B07KCR9D4B/ref=sr_1_1_sspa?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=12QJTY9ZQKDFS&dib=eyJ2IjoiMSJ9.e4XiYGwkBhDkwrF2zPtMo6dmXcWIIciaWpqbOmMUioo0WUeh_LhcCFyXkb0GnODCepyHba3YfpI8MbVLs6gDnz9owVlK4rXRSTrghK5mBIv4Quf3HKz68L4JmF-TMAm-maZslgAmT_4cgSryoUB_CCqrfLhexYFyE0FR9w1YH8_WVbicIn02swNPelQVGZAsjMc2opQsxMmtnTgwyWMpZf116s_5_7sowjxdziPw3WJvwaE9KodgP0zgeYkORfT3HPYaAyeyMq0UvzkIEpUYmgidc2ebT_5iP5SEXbXTFwU._o13sOINFA-MG62Ian9oNyjpfV8yMpfElqCkdH0xu4I&dib_tag=se&keywords=relaxdays+especiero+xxl&nsdOptOutParam=true&qid=1733785910&sprefix=relaxdays+especiero+xxl%2Caps%2C85&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
+- [Brother QL-800](https://www.brother.es/impresoras-etiquetas-y-recibos/ql-800)
+
 ### Usage
+
+#### Label generation
 
 ```console
 $ nix develop
 $ python label_generator.py --input-csv condiments.csv --font-family "Atkinson Hyperlegible" --font-path ./fonts/Atkinson-Hyperlegible-Regular-102.ttf --size 512 --output-dir output/ --alt-font-path ./fonts/Meiryo.ttf --alt-font-family Meiryo
 $ ./resize_images.sh 202 tops output/*.png
-$ ls -1 tops/*.png | xargs -n5 brother_ql print -l 23x23 --no-cut
 $ ./resize_images.sh 306 labels output/*.png
+```
+
+#### Printing
+
+For this step you'll need [brother-ql](https://github.com/pklaus/brother_ql) installed and configured.
+
+* Top label: 23x23mm die-cut
+* Front label: 29mm endless
+
+```console
+$ ls -1 tops/*.png | xargs -n5 brother_ql print -l 23x23 --no-cut
 $ ls -1 labels/*.png | xargs -n5 brother_ql print -l 29
 ```
 
