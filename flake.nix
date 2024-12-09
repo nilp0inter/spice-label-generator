@@ -11,13 +11,12 @@
       python = pkgs.python3;
       pythonDeps = python.withPackages (ps: [
         ps.pillow
-        ps.cairosvg
         ps.svgwrite
       ]);
     in {
       # A development shell with Python and dependencies
       devShells.${system}.default = pkgs.mkShell {
-        buildInputs = [ pythonDeps ];
+        buildInputs = [ pythonDeps pkgs.inkscape ];
       };
 
       # Define an app that runs the script directly
