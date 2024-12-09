@@ -35,4 +35,4 @@ $ ls -1 labels/*.png | xargs -n5 brother_ql print -l 29
 
 ### Result
 
-
+![preview](./assets/preview.gif)
