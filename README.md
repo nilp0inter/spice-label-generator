@@ -13,16 +13,26 @@ Given a CSV input with Spanish and English names for each spice, this tool produ
 ## Quickstart
 
 ### Prerequisites
-- [Python 3.7+](https://www.python.org/downloads/)
-- [Poetry](https://python-poetry.org/docs/) for dependency management
-- A suitable TTF font file on your system to use (e.g., Arial.ttf)
 
-### Installation
+- Nix with flakes. 
 
-```bash
-# Install project dependencies
-poetry install
+OR
 
-# Activate the virtual environment
-poetry shell
+- Python 3.7+ with Pillow, svgwrite. 
+- Imagemagick
+- Inkscape
+
+### Usage
+
+```console
+$ nix develop
+$ python label_generator.py --input-csv condiments.csv --font-family "Atkinson Hyperlegible" --font-path ./fonts/Atkinson-Hyperlegible-Regular-102.ttf --size 512 --output-dir output/ --alt-font-path ./fonts/Meiryo.ttf --alt-font-family Meiryo
+$ ./resize_images.sh 202 tops output/*.png
+$ ls -1 tops/*.png | xargs -n5 brother_ql print -l 23x23 --no-cut
+$ ./resize_images.sh 306 labels output/*.png
+$ ls -1 labels/*.png | xargs -n5 brother_ql print -l 29
+```
+
+### Result
+
 
