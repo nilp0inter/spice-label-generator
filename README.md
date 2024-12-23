@@ -35,21 +35,29 @@ OR
 
 ```console
 $ nix develop
-$ python label_generator.py --input-csv condiments.csv --font-family "Atkinson Hyperlegible" --font-path ./fonts/Atkinson-Hyperlegible-Regular-102.ttf --size 512 --output-dir output/ --alt-font-path ./fonts/Meiryo.ttf --alt-font-family Meiryo
-$ ./resize_images.sh 202 tops output/*.png
-$ ./resize_images.sh 306 labels output/*.png
+$ python label_generator.py --input-csv condiments.csv --font-family "Atkinson Hyperlegible" --font-path ./fonts/Atkinson-Hyperlegible-Regular-102.ttf --size 512 --output-dir condiments/ --alt-font-path ./fonts/Meiryo.ttf --alt-font-family Meiryo
+$ ./resize_images.sh 202 condiments_top condiments/*.png
+$ ./resize_images.sh 306 condiments_front condiments/*.png
+$ python label_generator.py --input-csv ingredients.csv --font-family "Atkinson Hyperlegible" --font-path ./fonts/Atkinson-Hyperlegible-Regular-102.ttf --size 696 --output-dir ingredients_label/ --alt-font-path ./fonts/Meiryo.ttf --alt-font-family Meiryo
 ```
 
 #### Printing
 
 For this step you'll need [brother-ql](https://github.com/pklaus/brother_ql) installed and configured.
 
+**Condiments:**
+
 * Top label: 23x23mm die-cut
 * Front label: 29mm endless
 
+**Ingredients:**
+
+* Label: 62mm endless
+
 ```console
-$ ls -1 tops/*.png | xargs -n5 brother_ql print -l 23x23 --no-cut
-$ ls -1 labels/*.png | xargs -n5 brother_ql print -l 29
+$ ls -1 condiments_top/*.png | xargs -n5 brother_ql print -l 23x23 --no-cut
+$ ls -1 condiments_front/*.png | xargs -n5 brother_ql print -l 29
+$ ls -1 ingredients_label/*.png | xargs -n5 brother_ql print -l 62
 ```
 
 ### Result
