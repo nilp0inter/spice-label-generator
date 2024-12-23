@@ -12,26 +12,6 @@ def sanitize_filename(text):
     filename = filename.strip().replace(' ', '_')
     return filename
 
-def break_line_chars(font, text, max_width):
-    chars = list(text)
-    lines = []
-    current_line = []
-    for ch in chars:
-        test_line = ''.join(current_line + [ch])
-        if font.getlength(test_line) <= max_width:
-            current_line.append(ch)
-        else:
-            if not current_line:
-                current_line.append(ch)
-            lines.append(''.join(current_line))
-            current_line = [ch]
-            if font.getlength(''.join(current_line)) > max_width:
-                lines.append(''.join(current_line))
-                current_line = []
-    if current_line:
-        lines.append(''.join(current_line))
-    return lines
-
 def wrap_text_by_words(font, text, max_width):
     words = text.split()
     lines = []
@@ -52,33 +32,30 @@ def wrap_text_by_words(font, text, max_width):
         lines.append(' '.join(current_line))
     return lines
 
-def ensure_no_horizontal_overflow(font, lines, max_width):
-    final_lines = []
-    for line in lines:
-        if font.getlength(line) > max_width:
-            char_lines = break_line_chars(font, line, max_width)
-            final_lines.extend(char_lines)
-        else:
-            final_lines.append(line)
-    return final_lines
-
 def fit_text_to_area(text, font_path, max_width, max_height, max_font_size=200, min_font_size=10):
     best_font_size = min_font_size
-    best_lines = [text]  # fallback lines if nothing fits
+    best_lines = [text]  # fallback lines if nothing se ajusta
 
     for font_size in range(max_font_size, min_font_size - 1, -1):
         font = ImageFont.truetype(font_path, font_size)
         ascent, descent = font.getmetrics()
         line_height = max(ascent + descent, 1)
 
+        # Ajustar texto por palabras
         lines = wrap_text_by_words(font, text, max_width)
-        lines = ensure_no_horizontal_overflow(font, lines, max_width)
 
+        # Calculamos el ancho máximo de las líneas resultantes
+        max_line_width = max(font.getlength(line) for line in lines) if lines else 0
+
+        # Calculamos el alto total de todas las líneas
         total_height = line_height * len(lines)
+
+        # Guardamos de todos modos por si resulta ser lo mejor
         best_font_size = font_size
         best_lines = lines
 
-        if total_height <= max_height:
+        # Comprobamos que no supere ni el ancho ni el alto
+        if max_line_width <= max_width and total_height <= max_height:
             return font_size, lines
 
     return best_font_size, best_lines
